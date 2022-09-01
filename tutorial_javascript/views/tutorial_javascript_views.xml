@@ -11,7 +11,7 @@
                 <form>
                     <sheet>
                         <group>
-                            <field name="field_one" widget="widget_one" />
+                            <field name="field_one" widget="widget_one" options="{'step': 1000}" />
                         </group>
                     </sheet>
                 </form>
