@@ -7,10 +7,18 @@
     <t t-name="WidgetOneTemplate">
         <div>
             <t t-if="widget.mode == 'edit' ">
-                <p>This is the widget view in edit mode (the user is editing the document)</p>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <button class="btn btn-danger btn-minus"> - </button>
+                    </div>
+                    <input type="text" class="form-control" t-att-value="formatted_value" disabled="disabled" />
+                    <div class="input-group-append">
+                        <button class="btn btn-success btn-plus"> + </button>
+                    </div>
+                </div>
             </t>
             <t t-if="widget.mode == 'readonly' ">
-                <p>This is the widget view in readonly mode (the user only sees the document)</p>
+                <span t-esc="formatted_value" />
             </t>
         </div>
     </t>
