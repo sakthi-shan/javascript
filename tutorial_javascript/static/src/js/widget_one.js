@@ -3,11 +3,45 @@ odoo.define('tutorial_javascript.widget_one', function (require) {
     // import the required object to create a widget
     var AbstractField = require('web.AbstractField');
     var FieldRegistry = require('web.field_registry');
+    var field_utils = require('web.field_utils');
+
+    // import qweb to render a view
+    var core = require('web.core');
+    var qweb = core.qweb;
 
     // create an object with any name
     // don't forget to extend to the web.AbstractField object or its child
     var WidgetOne = AbstractField.extend({
         template: 'WidgetOneTemplate', // fill with the template name that will be rendered by odoo
+        events: { // list of event, like jquery event
+            'click .btn-minus': 'btn_minus_action',
+            'click .btn-plus': 'btn_plus_action',
+        },
+        init: function () {
+            // the 'init' method is called first
+            this._super.apply(this, arguments);
+            if(this.nodeOptions.step){
+                // if user configure the 'step' value in xml file
+                // change the default value to user desired value
+                this.step = this.nodeOptions.step;
+            }
+        },
+        btn_minus_action: function(){
+            var new_value = this.value - this.step;
+            this._setValue(new_value.toString());
+            console.log(this.value);
+        },
+        btn_plus_action: function(){
+            var new_value = this.value + this.step;
+            this._setValue(new_value.toString());
+            console.log(this.value);
+        },
+        _render: function () {
+            // re-render the view if the field value is changed
+            console.log(this.value);
+            var formatted_value = field_utils.format[this.formatType](this.value);
+            this.$el.html($(qweb.render(this.template, {'widget': this, 'formatted_value': formatted_value})));
+        },
     });
 
     // register the widget to web.field_registry object
